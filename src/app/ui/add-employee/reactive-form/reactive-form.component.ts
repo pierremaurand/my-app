@@ -43,6 +43,10 @@ export class ReactiveFormComponent {
   }
 
   onSubmit(): void {
-    console.log('La valeur du formularie est: ', this.employeeForm.value);
+    if (this.employeeForm.valid) {
+      console.log('La valeur du formularie est: ', this.employeeForm.value);
+    } else {
+      this.employeeForm.markAllAsTouched();
+    }
   }
 }

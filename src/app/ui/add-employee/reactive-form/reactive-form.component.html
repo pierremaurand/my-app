@@ -44,9 +44,9 @@
       />
       <div class="invalid-feedback">
         @if(formControls.email.hasError('required')) {
-        <span>L'Email est obligatoire</span> } @else
-        if(formControls.email.hasError('email')){
-        <span>L'Email est incorrect</span> }
+        <span>L'Email est obligatoire</span> } @else{
+        @if(formControls.email.hasError('email')){
+        <span>L'Email est incorrect</span> } }
       </div>
     </div>
     <div class="mb-3">
@@ -73,12 +73,12 @@
       <div class="invalid-feedback">
         @if(formControls.phone.hasError('required')){
         <span>Le numéro de téléphone est obligatoire</span>
-        } @else if(formControls.phone.hasError('minLength') ||
+        } @else {@if(formControls.phone.hasError('minLength') ||
         formControls.phone.hasError('maxLength')) {
         <span>Le numéro de téléphone est erroné</span> } @else
-        if(formControls.phone.hasError('pattern')) {
+        {@if(formControls.phone.hasError('pattern')) {
         <span>Le numéro de téléphone ne doit contenir que des chiffres </span>
-        }
+        }}}
       </div>
     </div>
     <div class="mb-3">
@@ -120,6 +120,9 @@
             addressControls.street.touched
           "
         />
+        <div class="invalid-feedback">
+          <span>La rue est obligatoire</span>
+        </div>
       </div>
       <div class="mb-3">
         <input
@@ -136,6 +139,9 @@
             addressControls.city.touched
           "
         />
+        <div class="invalid-feedback">
+          <span>La ville est obligatoire</span>
+        </div>
       </div>
       <div class="mb-3">
         <input
@@ -160,6 +166,9 @@
             addressControls.country.touched
           "
         />
+        <div class="invalid-feedback">
+          <span>Le pays est obligatoire</span>
+        </div>
       </div>
     </div>
     <hr />
@@ -172,6 +181,9 @@
           type="text"
           [formControlName]="$index"
           class="form-control"
+          [class.is-invalid]="
+            hobbyForm.hasError('required') && hobbyForm.touched
+          "
         />
         @if($index) {
         <button
@@ -182,6 +194,9 @@
           <i class="fa-solid fa-circle-xmark"></i>&nbsp;Rétirer
         </button>
         }
+        <div class="invalid-feedback">
+          <span>Ce champ est obligatoire</span>
+        </div>
       </div>
 
       }
