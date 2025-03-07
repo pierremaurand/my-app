@@ -1,0 +1,201 @@
+<main class="container">
+  <form
+    [formGroup]="employeeForm"
+    class="form-container"
+    (ngSubmit)="onSubmit()"
+  >
+    <h4>Identité:</h4>
+    @let formControls = employeeForm.controls;
+    <div class="mb-3">
+      <input
+        type="text"
+        placeholder="Nom complet"
+        formControlName="fullName"
+        class="form-control"
+        [class.is-invalid]="
+          formControls.fullName.hasError('required') &&
+          formControls.fullName.touched
+        "
+        [class.is-valid]="
+          !formControls.fullName.hasError('required') &&
+          formControls.fullName.touched
+        "
+      />
+      <div class="invalid-feedback">
+        <span>Les noms sont obligatoires</span>
+      </div>
+    </div>
+    <div class="mb-3">
+      <input
+        type="email"
+        placeholder="Email"
+        formControlName="email"
+        class="form-control"
+        [class.is-invalid]="
+          (formControls.email.hasError('required') ||
+            formControls.email.hasError('email')) &&
+          formControls.email.touched
+        "
+        [class.is-valid]="
+          !formControls.email.hasError('required') &&
+          !formControls.email.hasError('email') &&
+          formControls.email.touched
+        "
+      />
+      <div class="invalid-feedback">
+        @if(formControls.email.hasError('required')) {
+        <span>L'Email est obligatoire</span> } @else
+        if(formControls.email.hasError('email')){
+        <span>L'Email est incorrect</span> }
+      </div>
+    </div>
+    <div class="mb-3">
+      <input
+        type="text"
+        placeholder="Phone"
+        formControlName="phone"
+        class="form-control"
+        [class.is-invalid]="
+          (formControls.phone.hasError('required') ||
+            formControls.phone.hasError('minLength') ||
+            formControls.phone.hasError('maxLength') ||
+            formControls.phone.hasError('pattern')) &&
+          formControls.phone.touched
+        "
+        [class.is-valid]="
+          !formControls.phone.hasError('required') &&
+          !formControls.phone.hasError('minLength') &&
+          !formControls.phone.hasError('maxLength') &&
+          !formControls.phone.hasError('pattern') &&
+          formControls.phone.touched
+        "
+      />
+      <div class="invalid-feedback">
+        @if(formControls.phone.hasError('required')){
+        <span>Le numéro de téléphone est obligatoire</span>
+        } @else if(formControls.phone.hasError('minLength') ||
+        formControls.phone.hasError('maxLength')) {
+        <span>Le numéro de téléphone est erroné</span> } @else
+        if(formControls.phone.hasError('pattern')) {
+        <span>Le numéro de téléphone ne doit contenir que des chiffres </span>
+        }
+      </div>
+    </div>
+    <div class="mb-3">
+      <select
+        formControlName="sexe"
+        class="form-control"
+        [class.is-invalid]="
+          formControls.sexe.hasError('required') && formControls.sexe.touched
+        "
+        [class.is-valid]="
+          !formControls.sexe.hasError('required') && formControls.sexe.touched
+        "
+      >
+        <option value="">Selectionnez un sexe</option>
+        <option value="M">Masculin</option>
+        <option value="F">Féminin</option>
+      </select>
+      <div class="invalid-feedback">
+        <span>Le sexe est obligatoire</span>
+      </div>
+    </div>
+
+    <hr />
+    <div [formGroup]="employeeForm.controls.address">
+      <h4>Adresse:</h4>
+      @let addressControls = formControls.address.controls;
+      <div class="mb-3">
+        <input
+          type="text"
+          placeholder="Rue"
+          formControlName="street"
+          class="form-control"
+          [class.is-invalid]="
+            addressControls.street.hasError('required') &&
+            addressControls.street.touched
+          "
+          [class.is-valid]="
+            !addressControls.street.hasError('required') &&
+            addressControls.street.touched
+          "
+        />
+      </div>
+      <div class="mb-3">
+        <input
+          type="text"
+          placeholder="Ville"
+          formControlName="city"
+          class="form-control"
+          [class.is-invalid]="
+            addressControls.city.hasError('required') &&
+            addressControls.city.touched
+          "
+          [class.is-valid]="
+            !addressControls.city.hasError('required') &&
+            addressControls.city.touched
+          "
+        />
+      </div>
+      <div class="mb-3">
+        <input
+          type="text"
+          placeholder="Province"
+          formControlName="state"
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <input
+          type="text"
+          placeholder="Pays"
+          formControlName="country"
+          class="form-control"
+          [class.is-invalid]="
+            addressControls.country.hasError('required') &&
+            addressControls.country.touched
+          "
+          [class.is-valid]="
+            !addressControls.country.hasError('required') &&
+            addressControls.country.touched
+          "
+        />
+      </div>
+    </div>
+    <hr />
+    <div formArrayName="hobbies">
+      <h4>Passe temps:</h4>
+      @for(hobbyForm of employeeForm.controls.hobbies.controls; track $index) {
+      <div class="input-group mb-3">
+        <input
+          placeholder="Ex: chant, lecture, course à pied, enseignement"
+          type="text"
+          [formControlName]="$index"
+          class="form-control"
+        />
+        @if($index) {
+        <button
+          class="btn btn-danger"
+          type="button"
+          (click)="removeHobbyForm($index)"
+        >
+          <i class="fa-solid fa-circle-xmark"></i>&nbsp;Rétirer
+        </button>
+        }
+      </div>
+
+      }
+      <div class="mb-3">
+        <button class="btn btn-primary" type="button" (click)="addHobbyForm()">
+          <i class="fa-solid fa-plus"></i>&nbsp;Ajouter
+        </button>
+      </div>
+    </div>
+    <hr />
+    <div class="text-end mb-3">
+      <button class="btn btn-success" type="submit">
+        <i class="fa-solid fa-floppy-disk"></i>&nbsp;Soumettre
+      </button>
+    </div>
+  </form>
+</main>
