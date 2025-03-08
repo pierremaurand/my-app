@@ -11,12 +11,10 @@
         placeholder="Nom complet"
         formControlName="fullName"
         class="form-control"
-        [class.is-invalid]="fullName.invalid"
-        [class.is-valid]="!fullName.invalid"
+        [class.is-invalid]="fullName?.invalid && fullName.touched"
+        [class.is-valid]="!fullName?.invalid && fullName.touched"
       />
-      <div class="invalid-feedback">
-        <span>Les noms sont obligatoires</span>
-      </div>
+      <div class="invalid-feedback">Les noms sont obligatoires</div>
     </div>
     <div class="mb-3">
       <input
@@ -24,22 +22,15 @@
         placeholder="Email"
         formControlName="email"
         class="form-control"
-        [class.is-invalid]="
-          (formControls.email.hasError('required') ||
-            formControls.email.hasError('email')) &&
-          formControls.email.touched
-        "
-        [class.is-valid]="
-          !formControls.email.hasError('required') &&
-          !formControls.email.hasError('email') &&
-          formControls.email.touched
-        "
+        [class.is-invalid]="email.invalid && email.touched"
+        [class.is-valid]="!email.invalid && email.touched"
       />
       <div class="invalid-feedback">
-        @if(formControls.email.hasError('required')) {
-        <span>L'Email est obligatoire</span> } @else{
-        @if(formControls.email.hasError('email')){
-        <span>L'Email est incorrect</span> } }
+        @if(email.hasError('required')) {
+        <span>L'Email est obligatoire</span>
+        } @else {
+        <span>L'Email est erroné</span>
+        }
       </div>
     </div>
     <div class="mb-3">
@@ -48,42 +39,17 @@
         placeholder="Phone"
         formControlName="phone"
         class="form-control"
-        [class.is-invalid]="
-          (formControls.phone.hasError('required') ||
-            formControls.phone.hasError('minLength') ||
-            formControls.phone.hasError('maxLength') ||
-            formControls.phone.hasError('pattern')) &&
-          formControls.phone.touched
-        "
-        [class.is-valid]="
-          !formControls.phone.hasError('required') &&
-          !formControls.phone.hasError('minLength') &&
-          !formControls.phone.hasError('maxLength') &&
-          !formControls.phone.hasError('pattern') &&
-          formControls.phone.touched
-        "
+        [class.is-invalid]="true"
+        [class.is-valid]="false"
       />
-      <div class="invalid-feedback">
-        @if(formControls.phone.hasError('required')){
-        <span>Le numéro de téléphone est obligatoire</span>
-        } @else {@if(formControls.phone.hasError('minLength') ||
-        formControls.phone.hasError('maxLength')) {
-        <span>Le numéro de téléphone est erroné</span> } @else
-        {@if(formControls.phone.hasError('pattern')) {
-        <span>Le numéro de téléphone ne doit contenir que des chiffres </span>
-        }}}
-      </div>
+      <div class="invalid-feedback"></div>
     </div>
     <div class="mb-3">
       <select
         formControlName="sexe"
         class="form-control"
-        [class.is-invalid]="
-          formControls.sexe.hasError('required') && formControls.sexe.touched
-        "
-        [class.is-valid]="
-          !formControls.sexe.hasError('required') && formControls.sexe.touched
-        "
+        [class.is-invalid]="true"
+        [class.is-valid]="false"
       >
         <option value="">Selectionnez un sexe</option>
         <option value="M">Masculin</option>
@@ -97,21 +63,14 @@
     <hr />
     <div [formGroup]="employeeForm.controls.address">
       <h4>Adresse:</h4>
-      @let addressControls = formControls.address.controls;
       <div class="mb-3">
         <input
           type="text"
           placeholder="Rue"
           formControlName="street"
           class="form-control"
-          [class.is-invalid]="
-            addressControls.street.hasError('required') &&
-            addressControls.street.touched
-          "
-          [class.is-valid]="
-            !addressControls.street.hasError('required') &&
-            addressControls.street.touched
-          "
+          [class.is-invalid]="true"
+          [class.is-valid]="false"
         />
         <div class="invalid-feedback">
           <span>La rue est obligatoire</span>
@@ -123,14 +82,8 @@
           placeholder="Ville"
           formControlName="city"
           class="form-control"
-          [class.is-invalid]="
-            addressControls.city.hasError('required') &&
-            addressControls.city.touched
-          "
-          [class.is-valid]="
-            !addressControls.city.hasError('required') &&
-            addressControls.city.touched
-          "
+          [class.is-invalid]="true"
+          [class.is-valid]="false"
         />
         <div class="invalid-feedback">
           <span>La ville est obligatoire</span>
@@ -150,14 +103,8 @@
           placeholder="Pays"
           formControlName="country"
           class="form-control"
-          [class.is-invalid]="
-            addressControls.country.hasError('required') &&
-            addressControls.country.touched
-          "
-          [class.is-valid]="
-            !addressControls.country.hasError('required') &&
-            addressControls.country.touched
-          "
+          [class.is-invalid]="true"
+          [class.is-valid]="false"
         />
         <div class="invalid-feedback">
           <span>Le pays est obligatoire</span>
@@ -174,9 +121,7 @@
           type="text"
           [formControlName]="$index"
           class="form-control"
-          [class.is-invalid]="
-            hobbyForm.hasError('required') && hobbyForm.touched
-          "
+          [class.is-invalid]="false"
         />
         @if($index) {
         <button
