@@ -7,4 +7,12 @@ main {
     justify-content: space-between;
     align-items: center;
   }
+
+  .card {
+    transition: 250ms;
+
+    &:hover {
+      scale: 0.98;
+    }
+  }
 }

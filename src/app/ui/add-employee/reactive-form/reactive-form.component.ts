@@ -1,5 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Employee } from '../../../core/models/employee.model';
+import { EmployeeService } from '../../../core/services/employee.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reactive-form',
@@ -10,8 +13,10 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 })
 export class ReactiveFormComponent {
   private fb = inject(FormBuilder);
+  private es = inject(EmployeeService);
+  private router = inject(Router);
 
-  employeeForm = this.fb.group({
+  employeeForm = this.fb.nonNullable.group({
     fullName: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
     phone: [
@@ -24,17 +29,19 @@ export class ReactiveFormComponent {
       ],
     ],
     sexe: ['', [Validators.required]],
-    address: this.fb.group({
+    address: this.fb.nonNullable.group({
       street: ['', [Validators.required]],
       city: ['', [Validators.required]],
       state: [''],
       country: ['', [Validators.required]],
     }),
-    hobbies: this.fb.array([this.fb.control('', [Validators.required])]),
+    hobbies: this.fb.array([
+      this.fb.nonNullable.control('', [Validators.required]),
+    ]),
   });
 
   addHobbyForm(): void {
-    const formControl = this.fb.control('');
+    const formControl = this.fb.nonNullable.control('');
     this.employeeForm.controls.hobbies.push(formControl);
   }
 
@@ -44,9 +51,22 @@ export class ReactiveFormComponent {
 
   onSubmit(): void {
     if (this.employeeForm.valid) {
-      console.log('La valeur du formularie est: ', this.employeeForm.value);
+      const employee: Employee = {
+        ...this.employeeForm.getRawValue(),
+      };
+      this.es.addEmployee(employee);
+      this.router.navigate(['/']);
     } else {
       this.employeeForm.markAllAsTouched();
     }
+  }
+
+  //Getters
+  get fullName() {
+    return this.employeeForm.get('fullName');
+  }
+
+  get email() {
+    return this.employeeForm.get('email');
   }
 }

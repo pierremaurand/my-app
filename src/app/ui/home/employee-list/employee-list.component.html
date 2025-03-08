@@ -5,4 +5,19 @@
       <i class="fa-solid fa-user-plus"></i>&nbsp; Nouvel employé
     </button>
   </header>
+
+  <div class="mt-5">
+    @for(employee of employees; track $index) {
+    <a class="card shadow mb-3" [routerLink]="'/employee/' + $index">
+      <div class="card-body">
+        <app-employee-infos></app-employee-infos>
+      </div>
+    </a>
+    }@empty {
+    <p class="mt-5 text-center">
+      Oups! Pas encore d'employée à afficher <br />
+      Commemcer par ajouter un employé
+    </p>
+    }
+  </div>
 </main>

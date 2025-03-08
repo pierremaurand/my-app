@@ -5,21 +5,14 @@
     (ngSubmit)="onSubmit()"
   >
     <h4>Identité:</h4>
-    @let formControls = employeeForm.controls;
     <div class="mb-3">
       <input
         type="text"
         placeholder="Nom complet"
         formControlName="fullName"
         class="form-control"
-        [class.is-invalid]="
-          formControls.fullName.hasError('required') &&
-          formControls.fullName.touched
-        "
-        [class.is-valid]="
-          !formControls.fullName.hasError('required') &&
-          formControls.fullName.touched
-        "
+        [class.is-invalid]="fullName.invalid"
+        [class.is-valid]="!fullName.invalid"
       />
       <div class="invalid-feedback">
         <span>Les noms sont obligatoires</span>
