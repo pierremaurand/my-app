@@ -1,9 +1,2 @@
-<nav class="navbar fixed-top bg-body-tertiary">
-  <div class="container-fluid d-flex justify-content-start gap-1">
-    <button routerLink="/" class="btn btn-link">
-      <i class="fa-solid fa-circle-arrow-left fs-4"></i>
-    </button>
-    <h3>Nouvel employé</h3>
-  </div>
-</nav>
-<app-reactive-form></app-reactive-form>
+<app-navigation-back-toolbar [toolbarTitle]="toolbarTitle" />
+<app-reactive-form />

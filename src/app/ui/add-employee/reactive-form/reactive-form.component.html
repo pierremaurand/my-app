@@ -11,8 +11,8 @@
         placeholder="Nom complet"
         formControlName="fullName"
         class="form-control"
-        [class.is-invalid]="fullName?.invalid && fullName.touched"
-        [class.is-valid]="!fullName?.invalid && fullName.touched"
+        [class.is-invalid]="fullName?.invalid && fullName?.touched"
+        [class.is-valid]="!fullName?.invalid && fullName?.touched"
       />
       <div class="invalid-feedback">Les noms sont obligatoires</div>
     </div>
@@ -22,11 +22,11 @@
         placeholder="Email"
         formControlName="email"
         class="form-control"
-        [class.is-invalid]="email.invalid && email.touched"
-        [class.is-valid]="!email.invalid && email.touched"
+        [class.is-invalid]="email?.invalid && email?.touched"
+        [class.is-valid]="!email?.invalid && email?.touched"
       />
       <div class="invalid-feedback">
-        @if(email.hasError('required')) {
+        @if(email?.hasError('required')) {
         <span>L'Email est obligatoire</span>
         } @else {
         <span>L'Email est erroné</span>
@@ -39,17 +39,23 @@
         placeholder="Phone"
         formControlName="phone"
         class="form-control"
-        [class.is-invalid]="true"
-        [class.is-valid]="false"
+        [class.is-invalid]="phone?.invalid && phone?.touched"
+        [class.is-valid]="!phone?.invalid && phone?.touched"
       />
-      <div class="invalid-feedback"></div>
+      <div class="invalid-feedback">
+        @if(phone?.hasError('required')) {
+        <span>Le numéro de téléphone est obligatoire</span>
+        } @else {
+        <span>Le numéro de téléphone est erroné</span>
+        }
+      </div>
     </div>
     <div class="mb-3">
       <select
         formControlName="sexe"
         class="form-control"
-        [class.is-invalid]="true"
-        [class.is-valid]="false"
+        [class.is-invalid]="sexe?.invalid && sexe?.touched"
+        [class.is-valid]="!sexe?.invalid && sexe?.touched"
       >
         <option value="">Selectionnez un sexe</option>
         <option value="M">Masculin</option>
@@ -69,8 +75,8 @@
           placeholder="Rue"
           formControlName="street"
           class="form-control"
-          [class.is-invalid]="true"
-          [class.is-valid]="false"
+          [class.is-invalid]="street?.invalid && street?.touched"
+          [class.is-valid]="!street?.invalid && street?.touched"
         />
         <div class="invalid-feedback">
           <span>La rue est obligatoire</span>
@@ -82,8 +88,8 @@
           placeholder="Ville"
           formControlName="city"
           class="form-control"
-          [class.is-invalid]="true"
-          [class.is-valid]="false"
+          [class.is-invalid]="city?.invalid && city?.touched"
+          [class.is-valid]="!city?.invalid && city?.touched"
         />
         <div class="invalid-feedback">
           <span>La ville est obligatoire</span>
@@ -103,8 +109,8 @@
           placeholder="Pays"
           formControlName="country"
           class="form-control"
-          [class.is-invalid]="true"
-          [class.is-valid]="false"
+          [class.is-invalid]="country?.invalid && country?.touched"
+          [class.is-valid]="!country?.invalid && country?.touched"
         />
         <div class="invalid-feedback">
           <span>Le pays est obligatoire</span>
@@ -121,7 +127,12 @@
           type="text"
           [formControlName]="$index"
           class="form-control"
-          [class.is-invalid]="false"
+          [class.is-invalid]="
+            $index === 0 && hobbyForm.invalid && hobbyForm.touched
+          "
+          [class.is-valid]="
+            $index === 0 && !hobbyForm.invalid && hobbyForm.touched
+          "
         />
         @if($index) {
         <button

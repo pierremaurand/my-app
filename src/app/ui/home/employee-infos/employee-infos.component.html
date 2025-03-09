@@ -1,1 +1,19 @@
-<p>employee-infos works!</p>
+<h4>
+  <i class="fa-solid fa-circle-user text-primary"></i>&nbsp;{{
+    employee().fullName
+  }}
+</h4>
+<h5>
+  <i class="fa-solid fa-at"></i>&nbsp;{{ employee().email }} -
+  <i class="fa-solid fa-square-phone"></i>&nbsp;{{ employee().phone }} -
+  <i class="fa-solid fa-person-half-dress"></i>&nbsp;{{ employee().sexe }}
+</h5>
+<p>
+  Adresse: {{ employee().address.street }} - {{ employee().address.city }}/{{
+    employee().address.state
+  }}/{{ employee().address.country }}
+</p>
+
+@for(hobby of employee().hobbies; track $index) {
+<p>Passe-temps N°{{ $index + 1 }} - {{ hobby }}</p>
+}

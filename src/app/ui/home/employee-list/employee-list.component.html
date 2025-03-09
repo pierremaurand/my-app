@@ -10,7 +10,7 @@
     @for(employee of employees; track $index) {
     <a class="card shadow mb-3" [routerLink]="'/employee/' + $index">
       <div class="card-body">
-        <app-employee-infos></app-employee-infos>
+        <app-employee-infos [employee]="employee" />
       </div>
     </a>
     }@empty {

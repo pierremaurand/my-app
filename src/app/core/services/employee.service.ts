@@ -9,4 +9,7 @@ export class EmployeeService {
 
   addEmployee = (employee: Employee) => this.employees.push(employee);
   getEmployees = () => this.employees;
+  getEmployee = (index: number) => this.employees[index];
+  editEmployee = (i: number, e: Employee) => (this.employees[i] = e);
+  deleteEmployee = (i: number) => this.employees.slice(i, 1);
 }

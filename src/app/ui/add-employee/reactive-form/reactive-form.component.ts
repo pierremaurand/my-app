@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Employee } from './../../../core/models/employee.model';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Employee } from '../../../core/models/employee.model';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { Router } from '@angular/router';
 
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   templateUrl: './reactive-form.component.html',
   styleUrl: './reactive-form.component.scss',
 })
-export class ReactiveFormComponent {
+export class ReactiveFormComponent implements OnInit {
   private fb = inject(FormBuilder);
   private es = inject(EmployeeService);
   private router = inject(Router);
@@ -23,9 +23,9 @@ export class ReactiveFormComponent {
       '',
       [
         Validators.required,
-        Validators.minLength(9),
-        Validators.maxLength(12),
-        Validators.pattern(/^\d+$/),
+        Validators.pattern(
+          /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
+        ),
       ],
     ],
     sexe: ['', [Validators.required]],
@@ -54,10 +54,26 @@ export class ReactiveFormComponent {
       const employee: Employee = {
         ...this.employeeForm.getRawValue(),
       };
-      this.es.addEmployee(employee);
+      if (history.state.id) {
+        this.es.editEmployee(history.state.id, employee);
+      } else {
+        this.es.addEmployee(employee);
+      }
       this.router.navigate(['/']);
     } else {
       this.employeeForm.markAllAsTouched();
+    }
+  }
+
+  ngOnInit(): void {
+    if (history.state.fullName) {
+      const employee = history.state as Employee;
+      this.employeeForm.patchValue(employee);
+      this.removeHobbyForm(0);
+      employee.hobbies.forEach((hobby) => {
+        const formControl = this.fb.nonNullable.control(hobby);
+        this.employeeForm.controls.hobbies.push(formControl);
+      });
     }
   }
 
@@ -68,5 +84,29 @@ export class ReactiveFormComponent {
 
   get email() {
     return this.employeeForm.get('email');
+  }
+
+  get phone() {
+    return this.employeeForm.get('phone');
+  }
+
+  get sexe() {
+    return this.employeeForm.get('sexe');
+  }
+
+  get street() {
+    return this.employeeForm.get('address')?.get('street');
+  }
+
+  get city() {
+    return this.employeeForm.get('address')?.get('city');
+  }
+
+  get state() {
+    return this.employeeForm.get('address')?.get('state');
+  }
+
+  get country() {
+    return this.employeeForm.get('address')?.get('country');
   }
 }

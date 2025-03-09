@@ -8,8 +8,9 @@ main {
     align-items: center;
   }
 
-  .card {
+  a.card {
     transition: 250ms;
+    text-decoration: none;
 
     &:hover {
       scale: 0.98;
